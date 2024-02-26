@@ -1,4 +1,3 @@
-'use client'
 import { useForm } from "react-hook-form";
 import { EMAIL_REG } from "./SignupForm";
 import axiosInstance from "../../libs/axios";
@@ -20,18 +19,22 @@ export default function SigninForm() {
   } = useForm({ mode: "onBlur" });
 
   const onSubmit = async () => {
-    const response = await axiosInstance.post("/auth/login", {
-      email: JSON.stringify(inputValue.email),
-      password: JSON.stringify(inputValue.password),
-    });
-    console.log(response);
-    if (response.status === 200) {
-      console.log("로그인 성공");
+    try {
+      const response = await axiosInstance.post("/auth/login", {
+        email: inputValue.email,
+        password: inputValue.password,
+      });
+      if (response.status === 200) {
+        router.push("/calendar");
+      }
+    } catch (e) {
+      console.log(e.message);
+      setError("email", { type: "custom", message: "이메일을 확인해 주세요." });
+      setError("password", {
+        type: "custom",
+        message: "비밀번호를 확인해 주세요.",
+      });
     }
-    router.push('/diary');
-
-    // 로그인 아이디 있나 check
-    // 달력페이지로 이동시키기
   };
 
   const inputValue = watch();

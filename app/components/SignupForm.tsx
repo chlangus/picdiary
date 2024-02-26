@@ -1,4 +1,6 @@
 import { useForm } from "react-hook-form";
+import axiosInstance from "../../libs/axios";
+import { useRouter } from "next/navigation";
 
 export const EMAIL_REG = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/;
 const PASSWD_REG = /(?=.*[0-9])(?=.*[A-Za-z])^.{8,}$/;
@@ -10,15 +12,27 @@ export default function SignupForm() {
     handleSubmit,
     watch,
   } = useForm({ mode: "onBlur" });
+  const router = useRouter();
 
   const inputValue = watch();
 
-  const onSubmit = () => {
-    // 중복 이메일 있나 check
-    // 달력페이지로 이동시키기
-  }
+  const onSubmit = async () => {
+    try {
+      const response = await axiosInstance.post("/auth/signup", {
+        email: inputValue.email,
+        password: inputValue.password,
+      });
+
+      if (response.status === 200) router.push("/calendar");
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col bg-[#EADBB4] rounded-[35px] p-8 mt-8 gap-2 w-[400px]">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col bg-[#EADBB4] rounded-[35px] p-8 mt-8 gap-2 w-[400px]"
+    >
       <input
         type="email"
         placeholder="EMAIL"
@@ -31,7 +45,11 @@ export default function SignupForm() {
           },
         })}
       />
-      {errors.email && <p className="ml-1 mt-[-4px] p-0 text-sm text-red-700">{errors.email.message as string}</p>}
+      {errors.email && (
+        <p className="ml-1 mt-[-4px] p-0 text-sm text-red-700">
+          {errors.email.message as string}
+        </p>
+      )}
       <input
         type="password"
         placeholder="PASSWORD"
@@ -44,17 +62,30 @@ export default function SignupForm() {
           },
         })}
       />
-      {errors.password && <p className="ml-1 mt-[-4px] p-0 text-sm text-red-700">{errors.password.message as string}</p>}
+      {errors.password && (
+        <p className="ml-1 mt-[-4px] p-0 text-sm text-red-700">
+          {errors.password.message as string}
+        </p>
+      )}
 
       <input
         type="password"
         placeholder="PASSWORD"
         className="rounded-[10px] px-3 w-[330px] h-[33px] text-xs outline-none"
         {...register("passwordCheck", {
-          validate: (value)=> {if (value!== inputValue.password) return "비밀번호가 일치하지 않습니다."},
+          validate: (value) => {
+            console.log(value);
+            console.log(inputValue.password);
+            if (value !== inputValue.password)
+              return "비밀번호가 일치하지 않습니다.";
+          },
         })}
       />
-      {errors.passwordCheck && <p className="ml-1 mt-[-4px] p-0 text-sm text-red-700">{errors.passwordCheck.message as string}</p>}
+      {errors.passwordCheck && (
+        <p className="ml-1 mt-[-4px] p-0 text-sm text-red-700">
+          {errors.passwordCheck.message as string}
+        </p>
+      )}
       <button className=" text-white rounded-lg bg-[#d6b666] w-[330px] h-[33px] text-sm p-1 mt-2 ">
         Sign up
       </button>
