@@ -25,6 +25,8 @@ export default function SigninForm() {
         password: inputValue.password,
       });
       if (response.status === 200) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("email", response.data.email);
         router.push("/calendar");
       }
     } catch (e) {
