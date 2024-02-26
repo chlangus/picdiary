@@ -3,9 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SigninForm from "../components/SigninForm";
 
-export default function Home() {
-
-
+export default function signin() {
   return (
     <main className="w-screen h-screen flex flex-col items-center justify-center">
       <Image width={330} height={59} src="/PICDIARY.svg" alt="logo" />
