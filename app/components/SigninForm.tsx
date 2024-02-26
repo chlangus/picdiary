@@ -1,36 +1,40 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 export default function SigninForm() {
-  const [inputValue, setInputValue] = useState({
-    email: "",
-    password: "",
-  });
+  const {
+    register,
+    formState: { errors },
+    handleSubmit
+  } = useForm({ mode: "onBlur" });
 
+  const onSubmit = () => {
+    // 로그인 아이디 있나 check
+    // 달력페이지로 이동시키기
+  }
+  
   return (
-    <section className="flex flex-col  bg-[#EADBB4] rounded-[35px] p-8 mt-8 gap-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col  bg-[#EADBB4] rounded-[35px] p-8 mt-8 gap-2">
       <input
         placeholder="EMAIL"
         className="w-[330px] h-[33px] rounded-[10px] px-3 text-xs outline-none"
-        value={inputValue.email}
-        onChange={(e) =>
-          setInputValue({
-            email: e.target.value,
-            password: inputValue.password,
-          })
-        }
+        {...register("email", {
+          required: "email is empty.",
+        })}
       />
+      {errors.email && <p className="ml-1 mt-[-4px] p-0 text-sm text-red-700">{errors.email.message as string}</p>}
       <input
         type="password"
         placeholder="PASSWORD"
-        value={inputValue.password}
         className="rounded-[10px] px-3 w-[330px] h-[33px] text-xs outline-none"
-        onChange={(e) =>
-          setInputValue({ email: inputValue.email, password: e.target.value })
-        }
+        {...register("password", {
+          required: "password is empty.",
+        })}
       />
+      {errors.password && <p className="ml-1 mt-[-4px] p-0 text-sm text-red-700">{(errors.password.message as string)}</p>}
       <button className=" text-white rounded-lg bg-[#d6b666] w-[330px] h-[33px] text-sm p-1 mt-2 ">
         LOGIN
       </button>
-    </section>
+    </form>
   );
 }
