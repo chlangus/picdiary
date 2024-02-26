@@ -11,7 +11,10 @@ export default function SignupForm() {
     formState: { errors },
     handleSubmit,
     watch,
-  } = useForm({ mode: "onBlur" });
+  } = useForm({
+    defaultValues: { email: "", password: "", passwordCheck: "" },
+    mode: "onBlur",
+  });
   const router = useRouter();
 
   const inputValue = watch();
@@ -35,10 +38,10 @@ export default function SignupForm() {
     >
       <input
         type="email"
-        placeholder="EMAIL"
+        placeholder="이메일"
         className="w-[330px] h-[33px] rounded-[10px] px-3 text-xs outline-none"
         {...register("email", {
-          required: "Email is empty.",
+          required: "이메일을 입력해주세요.",
           pattern: {
             value: EMAIL_REG,
             message: "올바른 이메일 주소가 아닙니다.",
@@ -52,10 +55,10 @@ export default function SignupForm() {
       )}
       <input
         type="password"
-        placeholder="PASSWORD"
+        placeholder="비밀번호"
         className="rounded-[10px] px-3 w-[330px] h-[33px] text-xs outline-none"
         {...register("password", {
-          required: "Password is empty.",
+          required: "비밀번호를 입력해 주세요.",
           pattern: {
             value: PASSWD_REG,
             message: "비밀번호는 영문, 숫자 조합 8자 이상 입력해 주세요.",
@@ -70,12 +73,10 @@ export default function SignupForm() {
 
       <input
         type="password"
-        placeholder="PASSWORD"
+        placeholder="비밀번호 확인"
         className="rounded-[10px] px-3 w-[330px] h-[33px] text-xs outline-none"
         {...register("passwordCheck", {
           validate: (value) => {
-            console.log(value);
-            console.log(inputValue.password);
             if (value !== inputValue.password)
               return "비밀번호가 일치하지 않습니다.";
           },
@@ -87,7 +88,7 @@ export default function SignupForm() {
         </p>
       )}
       <button className=" text-white rounded-lg bg-[#d6b666] w-[330px] h-[33px] text-sm p-1 mt-2 ">
-        Sign up
+        회원가입
       </button>
     </form>
   );

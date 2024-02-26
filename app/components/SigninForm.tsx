@@ -3,11 +3,6 @@ import { EMAIL_REG } from "./SignupForm";
 import axiosInstance from "../../libs/axios";
 import { useRouter } from "next/navigation";
 
-// {
-//   "id": 13,
-//   "email": "moo@codeit.com",
-//   "token": "bW9vQGNvZGVpdC5jb206Y29kZWl0MTExMTEx"
-// }
 export default function SigninForm() {
   const router = useRouter();
   const {
@@ -46,7 +41,7 @@ export default function SigninForm() {
       className="flex flex-col  bg-[#EADBB4] rounded-[35px] p-8 mt-8 gap-2 w-[400px]"
     >
       <input
-        placeholder="EMAIL"
+        placeholder="이메일"
         className="w-[330px] h-[33px] rounded-[10px] px-3 text-xs outline-none"
         {...register("email", {
           required: "이메일을 입력해주세요.",
@@ -63,7 +58,7 @@ export default function SigninForm() {
       )}
       <input
         type="password"
-        placeholder="PASSWORD"
+        placeholder="비밀번호"
         className="rounded-[10px] px-3 w-[330px] h-[33px] text-xs outline-none"
         {...register("password", {
           required: "패스워드를 입력해주세요",
@@ -75,7 +70,7 @@ export default function SigninForm() {
         </p>
       )}
       <button className=" text-white rounded-lg bg-[#d6b666] w-[330px] h-[33px] text-sm p-1 mt-2 ">
-        LOGIN
+        로그인
       </button>
     </form>
   );
