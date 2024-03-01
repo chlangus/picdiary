@@ -5,11 +5,11 @@ const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 export default function Calendar() {
   const mon = useRef(0);
   const today = new Date();
-  const [date, setDate] = useState({
+  const [targetDate, setTargetDate] = useState({
     year: today.getFullYear(),
     month: today.getMonth() + 1,
-    date: today.getDate(),
   });
+
   let firstDate = new Date(today.getFullYear(), today.getMonth(), 1);
   const lastDate = new Date(
     today.getFullYear(),
@@ -24,7 +24,7 @@ export default function Calendar() {
       today.getMonth() + mon.current,
       1
     );
-    setDate((prev) => ({
+    setTargetDate((prev) => ({
       ...prev,
       year: firstDate.getFullYear(),
       month: firstDate.getMonth() + 1,
@@ -47,10 +47,10 @@ export default function Calendar() {
 
   return (
     <>
-      <h2 className="text-center">{date.year}년</h2>
+      <h2 className="text-center">{targetDate.year}년</h2>
       <h2 className="flex justify-around">
         <button onClick={() => calMon(-1)}>{"<"}</button>
-        <span>{date.month}월</span>
+        <span>{targetDate.month}월</span>
         <button onClick={() => calMon(+1)}>{">"}</button>
       </h2>
       <h3 className="flex justify-around">
@@ -61,7 +61,7 @@ export default function Calendar() {
       <section className={styles.calendar}>
         {getDates().map((date, index) => {
           if (date)
-            if (date === today.getDate())
+            if (date === today.getDate() && today.getMonth()+1 === targetDate.month && today.getFullYear() === targetDate.year)
               return <span key={index} className={`${styles.today} ${styles.date}`}>{date}</span>;
             else return <span key={index} className={styles.date}>{date}</span>;
           else return <span key={index} className={styles.date}> </span>;

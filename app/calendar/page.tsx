@@ -5,6 +5,7 @@ import Header from "../components/Header";
 export default function calendar() {
   return (
     <main className="w-screen h-screen">
+      
       <Header />
       <main className="w-[300px] m-auto">
         <Calendar />
