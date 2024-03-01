@@ -28,7 +28,7 @@ export default function SignupForm() {
 
       if (response.status === 200) router.push("/calendar");
     } catch (e) {
-      console.log(e.message);
+      console.error(e.message);
     }
   };
   return (

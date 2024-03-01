@@ -25,7 +25,6 @@ export default function SigninForm() {
         router.push("/calendar");
       }
     } catch (e) {
-      console.log(e.message);
       setError("email", { type: "custom", message: "이메일을 확인해 주세요." });
       setError("password", {
         type: "custom",

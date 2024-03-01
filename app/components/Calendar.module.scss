@@ -1,0 +1,14 @@
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  text-align: center;
+}
+
+.date:nth-child(7n + 1) {
+  color: red;
+}
+
+.today {
+  color: orange;
+}
