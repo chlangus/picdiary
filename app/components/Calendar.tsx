@@ -17,7 +17,7 @@ export default function Calendar() {
     0
   );
 
-  const calMon = (value: number) => {
+  const calculateMonth = (value: number) => {
     mon.current += value;
     firstDate = new Date(
       today.getFullYear(),
@@ -31,7 +31,7 @@ export default function Calendar() {
     }));
   };
 
-  const getDates = () => {
+  const getDateList = () => {
     let cnt = 0;
     let dateCnt = 1;
     let dates = [];
@@ -49,9 +49,9 @@ export default function Calendar() {
     <>
       <h2 className="text-center">{targetDate.year}년</h2>
       <h2 className="flex justify-around">
-        <button onClick={() => calMon(-1)}>{"<"}</button>
+        <button onClick={() => calculateMonth(-1)}>{"<"}</button>
         <span>{targetDate.month}월</span>
-        <button onClick={() => calMon(+1)}>{">"}</button>
+        <button onClick={() => calculateMonth(+1)}>{">"}</button>
       </h2>
       <h3 className="flex justify-around">
         {DAY.map((day) => (
@@ -59,12 +59,30 @@ export default function Calendar() {
         ))}
       </h3>
       <section className={styles.calendar}>
-        {getDates().map((date, index) => {
+        {getDateList().map((date, index) => {
           if (date)
-            if (date === today.getDate() && today.getMonth()+1 === targetDate.month && today.getFullYear() === targetDate.year)
-              return <span key={index} className={`${styles.today} ${styles.date}`}>{date}</span>;
-            else return <span key={index} className={styles.date}>{date}</span>;
-          else return <span key={index} className={styles.date}> </span>;
+            if (
+              date === today.getDate() &&
+              today.getMonth() + 1 === targetDate.month &&
+              today.getFullYear() === targetDate.year
+            )
+              return (
+                <span key={index} className={`${styles.today} ${styles.date}`}>
+                  {date}
+                </span>
+              );
+            else
+              return (
+                <span key={index} className={styles.date}>
+                  {date}
+                </span>
+              );
+          else
+            return (
+              <span key={index} className={styles.date}>
+                {" "}
+              </span>
+            );
         })}
       </section>
     </>
