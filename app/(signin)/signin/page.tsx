@@ -1,9 +1,17 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import SigninForm from "../components/SigninForm";
+import SigninForm from "../../components/SigninForm";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function signin() {
+  const router = useRouter();
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      router.push('/calendar');
+    }
+  })
   return (
     <main className="w-screen h-screen flex flex-col items-center justify-center">
       <Link

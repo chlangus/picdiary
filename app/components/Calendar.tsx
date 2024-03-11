@@ -1,90 +1,76 @@
-import { useRef, useState } from "react";
-import styles from "./Calendar.module.scss";
+import { useEffect, useState } from "react";
 const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 
+// prevMonth 누르면 이전달로 설정
+
 export default function Calendar() {
-  const mon = useRef(0);
-  const today = new Date();
-  const [targetDate, setTargetDate] = useState({
-    year: today.getFullYear(),
-    month: today.getMonth() + 1,
-  });
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [dateList, setDateList] = useState(getCalendar(currentDate));
 
-  let firstDate = new Date(today.getFullYear(), today.getMonth(), 1);
-  const lastDate = new Date(
-    today.getFullYear(),
-    today.getMonth() + mon.current + 1,
-    0
-  );
-
-  const calculateMonth = (value: number) => {
-    mon.current += value;
-    firstDate = new Date(
-      today.getFullYear(),
-      today.getMonth() + mon.current,
-      1
-    );
-    setTargetDate((prev) => ({
-      ...prev,
-      year: firstDate.getFullYear(),
-      month: firstDate.getMonth() + 1,
-    }));
-  };
-
-  const getDateList = () => {
-    let cnt = 0;
-    let dateCnt = 1;
-    let dates = [];
-    for (let j = 1; j < lastDate.getDate() + cnt + 1; j++) {
-      if (firstDate.getDay() >= j) {
-        dates.push(0);
-        cnt++;
-      } else dates.push(dateCnt++);
-    }
-
-    return dates;
-  };
-
+  useEffect(() => {
+    setDateList(getCalendar(currentDate));
+  }, [currentDate]);
   return (
     <>
-      <h2 className="text-center">{targetDate.year}년</h2>
-      <h2 className="flex justify-around">
-        <button onClick={() => calculateMonth(-1)}>{"<"}</button>
-        <span>{targetDate.month}월</span>
-        <button onClick={() => calculateMonth(+1)}>{">"}</button>
-      </h2>
-      <h3 className="flex justify-around">
-        {DAY.map((day) => (
-          <span key={day}>{day}</span>
-        ))}
-      </h3>
-      <section className={styles.calendar}>
-        {getDateList().map((date, index) => {
-          if (date)
-            if (
-              date === today.getDate() &&
-              today.getMonth() + 1 === targetDate.month &&
-              today.getFullYear() === targetDate.year
-            )
-              return (
-                <span key={index} className={`${styles.today} ${styles.date}`}>
-                  {date}
-                </span>
-              );
-            else
-              return (
-                <span key={index} className={styles.date}>
-                  {date}
-                </span>
-              );
-          else
-            return (
-              <span key={index} className={styles.date}>
-                {" "}
-              </span>
-            );
-        })}
+      <div className="text-center" onClick={() => setCurrentDate(new Date())}>
+        {currentDate.getFullYear()}
+      </div>
+      <section className="flex justify-around">
+        <button onClick={() => prevMonth(currentDate, setCurrentDate)}>
+          {"<"}
+        </button>
+        {currentDate.getMonth() + 1}
+        <button onClick={() => nextMonth(currentDate, setCurrentDate)}>
+          {">"}
+        </button>
       </section>
+
+      <div className="grid grid-cols-7 text-center">
+        {DAY.map((day) => (
+          <span>{day}</span>
+        ))}
+        {dateList.map((date) => (!date ? <span></span> : <span>{date}</span>))}
+      </div>
     </>
   );
+}
+
+function prevMonth(currentDate, setCurrentDate) {
+  setCurrentDate(
+    new Date(currentDate.getFullYear(), currentDate.getMonth() - 1)
+  );
+  return;
+}
+
+function nextMonth(currentDate, setCurrentDate) {
+  setCurrentDate(
+    new Date(currentDate.getFullYear(), currentDate.getMonth() + 1)
+  );
+  return;
+}
+
+function getCalendar(currentDate) {
+  let lastDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + 1,
+    0
+  ).getDate();
+  let firstDay = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    1
+  ).getDay();
+
+  let dateList = [];
+  let dateCnt = 1;
+  for (let i = 1; i < lastDate + firstDay; i++) {
+    if (firstDay > i) {
+      dateList.push(0);
+    } else {
+      dateList.push(dateCnt++);
+    }
+  }
+  // 첫날에서부터 마지막날 배열에 집어넣기 day 이전이면 넣지 않기
+
+  return dateList;
 }

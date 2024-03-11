@@ -12,9 +12,7 @@ export default function Home() {
         src="/PICDIARY.svg"
         alt="logo"
       />
-      <h2 className="text-center text-gray-300 transition-colors transform bg-slate-500">
-        그림 일기를 남겨보세요~
-      </h2>
+      <div className="h-[100px] text-center text-[40px] mt-[30px]">달력 그리고 일기</div>
       <button className="block m-auto mt-10 outline-dashed">
         <Link href="/signin">로그인페이지로</Link>
       </button>
