@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ export default function Header() {
     router.push("/");
   };
   return (
-    <nav className="flex justify-around mb-10">
+    <nav className="flex justify-around my-10">
       <Link href='/'>
         <Image
           className="text-left"
