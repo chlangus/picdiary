@@ -10,24 +10,26 @@ export default function Calendar() {
     setDateList(getCalendar(currentDate));
   }, [currentDate]);
   return (
-    <>
-      <span
-        className="flex justify-center text-3xl text-gray-700 mb-2 cursor-pointer"
-        onClick={() => setCurrentDate(new Date())}
-      >
-        {currentDate.getFullYear()}
-      </span>
-      <section className="flex justify-around text-gray-500 my-4 text-5xl">
-        <button onClick={() => prevMonth(currentDate, setCurrentDate)}>
-          {"<"}
-        </button>
-        {currentDate.getMonth() + 1}
-        <button onClick={() => nextMonth(currentDate, setCurrentDate)}>
-          {">"}
-        </button>
+    <main className="max-w-[960px] mx-auto">
+      <section className="flex items-center justify-between my-4 mx-4 text-gray-700">
+        <span
+          className="flex justify-center text-3xl cursor-pointer "
+          onClick={() => setCurrentDate(new Date())}
+        >
+          {currentDate.getFullYear()}
+        </span>
+        <span className="text-4xl">{currentDate.getMonth() + 1}</span>
+        <div className="flex gap-4 text-2xl">
+          <button onClick={() => prevMonth(currentDate, setCurrentDate)}>
+            {"<"}
+          </button>
+          <button onClick={() => nextMonth(currentDate, setCurrentDate)}>
+            {">"}
+          </button>
+        </div>
       </section>
 
-      <div className="grid grid-cols-7 grid-flow-dense text-center gap-2 mx-60">
+      <div className="grid grid-cols-7 grid-flow-dense text-center gap-2">
         {DAY.map((day) => (
           <span className=" text-xl mb-[-6px]">{day}</span>
         ))}
@@ -45,7 +47,7 @@ export default function Calendar() {
               text-xl
               text-left
               ${!(index % 7) && "text-red-700"}
-              ${(index % 7 === 6) && "text-blue-700"}
+              ${index % 7 === 6 && "text-blue-700"}
               ${
                 today.getDate() === date &&
                 today.getMonth() === currentDate.getMonth() &&
@@ -60,7 +62,7 @@ export default function Calendar() {
           )
         )}
       </div>
-    </>
+    </main>
   );
 }
 

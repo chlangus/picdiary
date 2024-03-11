@@ -4,7 +4,7 @@ import Header from "../../components/Header";
 
 export default function calendar() {
   return (
-    <main className="w-screen h-screen">
+    <main>
       <Header />
       <Calendar />
     </main>
