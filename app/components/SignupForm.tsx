@@ -1,36 +1,11 @@
-import { useForm } from "react-hook-form";
-import axiosInstance from "../../libs/axios";
-import { useRouter } from "next/navigation";
+import useSignup from "../../hooks/useSignup";
 
 export const EMAIL_REG = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6})*$/;
 const PASSWD_REG = /(?=.*[0-9])(?=.*[A-Za-z])^.{8,}$/;
 
 export default function SignupForm() {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-    watch,
-  } = useForm({
-    defaultValues: { email: "", password: "", passwordCheck: "" },
-    mode: "onBlur",
-  });
-  const router = useRouter();
+  const {handleSubmit, onSubmit, register, errors, inputValue} = useSignup();
 
-  const inputValue = watch();
-
-  const onSubmit = async () => {
-    try {
-      const response = await axiosInstance.post("/auth/signup", {
-        email: inputValue.email,
-        password: inputValue.password,
-      });
-
-      if (response.status === 200) router.push("/calendar");
-    } catch (e) {
-      console.error(e.message);
-    }
-  };
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

@@ -1,27 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import useHeader from "../../hooks/useHeader";
 
 export default function Header() {
-  const [email, setEmail] = useState("");
-  const router = useRouter();
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      router.push("/");
-    }
-    const user = localStorage.getItem("email") || "";
-    setEmail(user);
-  }, []);
+  const { email, handleClick } = useHeader();
 
-  const handleClick = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("token");
-    router.push("/");
-  };
   return (
-    <nav className="flex justify-around my-10">
-      <Link href='/'>
+    <nav className={`flex justify-around my-10`}>
+      <Link href="/">
         <Image
           className="text-left"
           width={220}
@@ -33,7 +19,7 @@ export default function Header() {
       <div>
         <span>{email}</span>
         <span
-          className=" text-gray-700 ml-5 hover:text-red-700 cursor-pointer"
+          className="ml-5 text-gray-700 cursor-pointer hover:text-red-700"
           onClick={handleClick}
         >
           로그아웃
